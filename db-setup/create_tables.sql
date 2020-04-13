@@ -26,7 +26,8 @@ CREATE TABLE `spaserverexample_studenti` (
   `tridy_id` int(11) NOT NULL,
   `jmeno` varchar(100) COLLATE utf8_czech_ci NOT NULL,
   `prijmeni` varchar(100) COLLATE utf8_czech_ci NOT NULL,
-  `cislo_podle_tridnice` int(11) NOT NULL
+  `cislo_podle_tridnice` int(11) NOT NULL,
+  `stav` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 -- --------------------------------------------------------
