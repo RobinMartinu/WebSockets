@@ -13,6 +13,11 @@
     "dateformat": "^3.0.3",
     "html-entities": "^1.2.1",
     "mysql": "^2.18.1",
-    "spaserver": "git+https://github.com/liborsvejda/spaserver.git"
+    "spaserver": "git+https://github.com/liborsvejda/spaserver.git",
+    "uniqid": "^5.2.0",
+    "ws": "^7.2.3"
+  },
+  "devDependencies": {
+    "simple-ssh": "^1.0.0"
   }
 }

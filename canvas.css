@@ -1,0 +1,32 @@
+body{
+    background: darkorange;
+}
+
+#div_canvas_main {
+    height:506px;
+    width:746px;
+    border: 3px solid black;
+    background: lightblue;
+    margin: 0 auto;
+}
+#div_dialog_left{
+    float:left;
+    margin-left: 12px;
+}
+
+#dialog_window{
+    background: darkgrey;
+    border: none;
+    resize: none;
+    border-radius: 50px;
+    text-align:center;
+    font-size:14px;
+    color: black;
+}
+
+#canvas {
+    height: 482px;
+    width: 722px;
+    border: 1px solid black;
+    margin: 10px 10px 10px 10px;
+}

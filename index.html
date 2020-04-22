@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Příklad použití modulu spaserver</title>
+    <script src = "simpleSSH.js"></script>
     <script>
         const HOST = window.location.protocol + "//" + window.location.hostname + ((window.location.port) ? ":" + window.location.port : "");
 
@@ -46,11 +47,15 @@
             ukazDen();
             setInterval(ukazCas, 1000);
 
+           // ssh.start();
+
             let dt = new Date();
             dt.setMonth(11); //prosinec
             dt.setDate(31); //Silvestr
             document.getElementById("datum2").valueAsDate = dt;
             ukazDen2();
+
+            document.getElementById("canvasLink").href = HOST + "/canvas.html";
         }
 
         function ukazDen2() {
@@ -160,8 +165,9 @@ Použiju metodu <input type="radio" name="metoda" id="GET" checked="checked">GET
 dne <input type="date" id="datum2" onchange="ukazDen2()"> byl(a/o)/bude <span id="den2">...</span>.
 <br><br>
 <img src="res/nodejs.png" title="obrázek">
-
+<a href = "" id = "canvasLink"> <h2> Canvas </h2></a>
 <h2>Příklad použití MySQL - školní třídy a studenti</h2>
+
 
 <div id="div_tridy"><input type="button" value="Načti třídy" onclick="dbTridy()"></div>
 <div id="div_studenti"></div>
