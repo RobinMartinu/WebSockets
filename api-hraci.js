@@ -3,8 +3,8 @@ const uniqid = require("uniqid");
 let players= [];
 let playersIndex = [];
 
-let InitX = 50;
-let InitY = 50;
+let initX = 50;
+let initY = 50;
 
 exports.apiHraci = function (req, res, obj){
     if (req.pathname.endsWith("/add")){
@@ -14,9 +14,9 @@ exports.apiHraci = function (req, res, obj){
         player.name = req.parameters.name;
         console.log(player.name + ": " + obj.uid);
         player.uid = obj.uid;
-        player.x = 0;
-        player.y = 0;
-        player.src = "./sprites/Character/move_front1.png";
+        player.x = initX;
+        player.y = initY;
+        player.src = req.parameters.host + "/sprites/Character/move_front1.png";
         player.height = 140;
         player.width = 80;
         player.movDir = "down";

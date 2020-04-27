@@ -18,6 +18,7 @@ const CANVAS_HEIGHT = 480;
 const CANVAS_WIDTH = 720;
 const MOVE_SPEED = 5;
 
+
 function processApi(req, res) {
     console.log(req.pathname);
     res.writeHead(200, API_HEAD);
@@ -52,74 +53,64 @@ const WebSocket = require("ws");
 const wss = new WebSocket.Server({server:srv});
 wss.on('connection', ws => {
     ws.on('message', message => { //prijem zprav
-        console.log(`Přijatá zpráva: ${message}`);
+        // console.log(`Přijatá zpráva: ${message}`);
         let playerUpdate = JSON.parse(message);
-        console.log(playerUpdate);
         let player = findPlayer(playerUpdate.uid);
-        console.log(player);
-
-        if (playerUpdate.right){
-            if (player.x < CANVAS_WIDTH - player.width) {
-                if (player.movDir === "right") {
-                    player.sameDirMov = (player.sameDirMov + 1) % 4;
-                } else {
-                    player.sameDirMov = 0;
+        if(player){
+            if (playerUpdate.right) {
+                if (player.x < CANVAS_WIDTH - player.width) {
+                    if (player.movDir === "right") {
+                        player.sameDirMov = (player.sameDirMov + 1) % 4;
+                    } else {
+                        player.sameDirMov = 0;
+                    }
+                    player.movDir = "right";
+                    // player.src = HOST + "/sprites/Character/move_right" + player.sameDirMov + ".png";
+                    player.width = 130;
+                    player.x += MOVE_SPEED;
                 }
-                player.movDir = "right";
-                player.src = "./sprites/Character/move_right" + player.sameDirMov + ".png";
-                player.width = 130;
-                player.x += MOVE_SPEED;
+            }
+            if (playerUpdate.left) {
+                if (player.x > MOVE_SPEED) {
+                    if (player.movDir === "left") {
+                        player.sameDirMov = (player.sameDirMov + 1) % 4;
+                    } else {
+                        player.sameDirMov = 0;
+                    }
+                    player.movDir = "left";
+                    //player.src = HOST + "/sprites/Character/mov_left" + player.sameDirMov + ".png";
+                    player.x -= MOVE_SPEED;
+                }
+            }
+            if (playerUpdate.up) {
+                if (player.y > MOVE_SPEED) {
+                    if (player.movDir === "up") {
+                        player.sameDirMov = (player.sameDirMov + 1) % 4;
+                    } else {
+                        player.sameDirMov = 0;
+                    }
+                    player.movDir = "up";
+                    // player.src = HOST + "/sprites/Character/move_back" + player.sameDirMov + ".png";
+                    player.width = 80;
+                    player.y -= MOVE_SPEED;
+                }
 
             }
-
-            console.log(player.x, player.y);
-
+            if (playerUpdate.down) {
+                if (player.y < CANVAS_HEIGHT - player.height) {
+                    if (player.movDir === "down") {
+                        player.sameDirMov = (player.sameDirMov + 1) % 4;
+                    } else {
+                        player.sameDirMov = 0;
+                    }
+                    player.movDir = "down";
+                    //   player.src = HOST + "/sprites/Character/mov_front" + player.sameDirMov + ".png";
+                    player.width = 80;
+                    player.y += MOVE_SPEED;
+                }
+            }
         }
-        if(playerUpdate.left){
-            if (player.x > MOVE_SPEED) {
-                if (player.movDir === "left") {
-                    player.sameDirMov = (player.sameDirMov + 1) % 4;
-                } else {
-                    player.sameDirMov = 0;
-                }
-                player.movDir = "left";
-                player.src = "./sprites/Character/mov_left" + player.sameDirMov + ".png";
-                player.x -= MOVE_SPEED;
-            }
-            console.log(player.x, player.y);
-        }
-        if(playerUpdate.up){
-            if ( player.y > MOVE_SPEED){
-                if(player.movDir === "up"){
-                    player.sameDirMov = (player.sameDirMov+1)%4;
-                } else {
-                    player.sameDirMov = 0;
-                }
-                player.movDir = "up";
-                player.src = "./sprites/Character/move_back" + player.sameDirMov + ".png";
-                player.width = 80;
-                player.y -= MOVE_SPEED;
-            }
-            console.log(player.x, player.y);
-
-        }
-        if(playerUpdate.down){
-            if ( player.y < CANVAS_HEIGHT - player.height) {
-                if (player.movDir === "down") {
-                    player.sameDirMov = (player.sameDirMov + 1) % 4;
-                } else {
-                    player.sameDirMov = 0;
-                }
-                player.movDir = "down";
-                player.src = "./sprites/Character/mov_front" + player.sameDirMov + ".png";
-                player.width = 80;
-                console.log(player.x, player.y);
-                player.y += MOVE_SPEED;
-            }
-
-        console.log(listPlayers());
-
-    }});
+    });
 });
 let counter = 0;
 function broadcast() {
@@ -132,4 +123,4 @@ function broadcast() {
     });
 }
 
-setInterval(broadcast, 10);
+setInterval(broadcast, 30);

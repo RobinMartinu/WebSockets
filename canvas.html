@@ -9,18 +9,28 @@
 
 </head>
 <body onload = "onLoad()" onkeydown = "onKeyDown(event)" onkeyup = "onKeyUp(event)" >
-<div>
+<div id = "div_main">
     <div style = "text-align: center;">
-<h1> Canvas</h1>
+<h1> Texas McChicken</h1>
     </div>
+
     <div id = "div_dialog_left">
         <textarea id = "dialog_window" disabled = "disabled" rows = "30"></textarea>
+    </div>
+
+    <div id = "div_panel_right">
+        <div id = "registration">
+            <input type = "text" placeholder="Jméno" id = "name_reg">
+            <input id = "button_reg" type = "button" value = "✔" onclick = "addPlayer()">
+        </div>
+
     </div>
     <div id = "div_canvas_main">
         <canvas id = "canvas" width = "720px" height="480px">
 
         </canvas>
     </div>
+
 </div>
 
 </body>

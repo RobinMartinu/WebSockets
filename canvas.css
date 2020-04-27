@@ -2,6 +2,10 @@ body{
     background: darkorange;
 }
 
+#div_main{
+    background-image: url("./res/bg_desert.png");
+}
+
 #div_canvas_main {
     height:506px;
     width:746px;
@@ -12,6 +16,14 @@ body{
 #div_dialog_left{
     float:left;
     margin-left: 12px;
+}
+#div_panel_right{
+    float:right;
+    margin-right: 5%;
+}
+#button_reg{
+    height: 30px;
+    width: 30px;
 }
 
 #dialog_window{
