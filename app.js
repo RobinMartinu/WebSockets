@@ -109,6 +109,10 @@ wss.on('connection', ws => {
                     player.y += MOVE_SPEED;
                 }
             }
+            if (playerUpdate.damage){
+                let block = findPlayer("block");
+                block.height -= 0.1;
+            }
         }
     });
 });

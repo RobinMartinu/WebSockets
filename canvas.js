@@ -13,7 +13,9 @@ let play = true;
 
 let player = {};
 const pauseTime = 0;
-let songNum = 3;
+let songNum = 0;
+let audio = document.createElement('audio');
+let winArr = [];
 
 function preloadImgs(arr, direction){
     for (let i = 0; i < 4; i++){
@@ -45,6 +47,9 @@ function onLoad() {
     preloadImgs(imgDown, "front");
     preloadImgs(imgLeft, "left");
     preloadImgs(imgRight, "right");
+    let win = new Image;
+    win.src = "./res/dorime.png";
+    winArr.push(win);
 
 
     player.host = HOST;
@@ -88,22 +93,35 @@ ctx = canvas.getContext("2d");
     connection.onmessage = e => {
         let players = JSON.parse(e.data);
         console.log(players);
-        document.getElementById("dialog_window").innerHTML = "";
-        document.getElementById("dialog_window").innerHTML = "Dialogové&#10 okno:&#10 &#10 " ;
 
-        /*
-        for (let i = 0; i < players.length; i++){
-            drawPlayer(players[i]);
-            if (players[i].uid === player.uid){
-                player = players[i].uid;
-            }
-        }
-         */
+        document.getElementById("dialog_window").innerHTML = "Dialogové&#10 okno:&#10 &#10 ";
+        let introMsg = "Vítejte ve hře Texas McChicken! &#10 Vpravo si " +
+            "vyberte jméno a klikněte potvrdit. &#10 Ovládání šipkami, mezerníkem se útočí. &#10 " +
+            " &#10 Cílem hry je zbavit se zlého černého bloku.";
+        document.getElementById("dialog_window").innerHTML += introMsg;
+
         ctx.clearRect(0,0, canvas.width, canvas.height);
         for (let o of players){
-            drawPlayer(o);
-            if (o.uid === player.uid){
-                player = o;
+            if (o.uid !== "block") {
+                drawPlayer(o);
+                if (o.uid === player.uid) {
+                    player = o;
+                }
+            } else {
+                if (o.height > 5) {
+                    ctx.fillStyle = o.fillStyle;
+                    ctx.fillRect(o.x, o.y, o.width, o.height);
+                } else {
+                    o.height = 0;
+                    let url = `${HOST}/hraci/add?name=D O R I M E&host=${HOST}`;
+                    fetch(url).then(function (response) {
+                        response.text().then(function (text) {
+                        }).catch((error) => {
+                            console.log(error);
+                        });
+                    });
+
+                }
             }
         }
     };
@@ -116,9 +134,11 @@ ctx = canvas.getContext("2d");
 }
 
 function playBgMusic(songNum){
-    let audio = document.createElement('audio');
+    // let audio = document.createElement('audio');
+    audio.setAttribute("id", "bgMusic");
     audio.style.display = "none";
     audio.controls = true;
+    audio.id = "bgMusic";
     audio.src = HOST + "/res/" + songNum + "_audio.mp3";
     audio.autoplay = true;
     audio.onended = function(){
@@ -133,9 +153,16 @@ function playBgMusic(songNum){
             playBgMusic(songNum);
         }
     };
-    document.body.appendChild(audio);
-    document.getElementsByTagName("audio").play();
+   // document.body.appendChild(audio);
+    document.getElementById("audio").play();
+
     alert("done");
+}
+function skipSong (){
+    audio.pause();
+    songNum++;
+    songNum %= 4;
+    playBgMusic(songNum);
 }
 function drawPlayer(player){
 
@@ -158,8 +185,11 @@ function drawPlayer(player){
             break;
 
     }
+        if (player.name === "D O R I M E"){
+            player.img = winArr[0];
+        }
         ctx.drawImage(player.img, player.x, player.y);
-        ctx.strokeStyle = "black";
+        ctx.strokeStyle = "yellow";
         ctx.strokeText(player.name, player.x, player.y-8);
 
        // ctx.fillStyle = "#FF0000";
@@ -187,12 +217,17 @@ function setMove (event, state){
         case "Enter":
             play = true;
             break;
+        case " ":
+            player.damage = state;
+            console.log("Space");
+            break;
         default:
             console.log(event);
     }
    posliWsZpravu();
 }
 function onKeyDown(event){
+    console.log(event);
         setMove(event, play);
 }
 function onKeyUp(event){
@@ -200,7 +235,7 @@ function onKeyUp(event){
 }
 
 function posliWsZpravu() {
-    if(player.up || player.down || player.left || player.right) {
+    if(player.up || player.down || player.left || player.right || player.damage) {
         connection.send(JSON.stringify(player));
     }
 }

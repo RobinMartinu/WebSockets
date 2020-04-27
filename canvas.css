@@ -26,6 +26,12 @@ body{
     width: 30px;
 }
 
+#button_skipSong{
+    display: block;
+    margin-top: 12px;
+    font-size: 20px;
+}
+
 #dialog_window{
     background: darkgrey;
     border: none;
